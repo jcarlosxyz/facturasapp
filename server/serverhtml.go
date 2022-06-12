@@ -38,6 +38,7 @@ func main() {
 
 func ScanerVerifica(w http.ResponseWriter, r *http.Request) {
 	//conexionEstablecida := conexionBd()
+	//hola como estas
 	numfactura := r.URL.Query().Get("nfactura")
 	plantillas.ExecuteTemplate(w, "scanerverifica", nil)
 	fmt.Println(numfactura)
