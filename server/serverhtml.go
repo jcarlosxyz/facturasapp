@@ -37,12 +37,23 @@ func main() {
 }
 
 func ScanerVerifica(w http.ResponseWriter, r *http.Request) {
-	//conexionEstablecida := conexionBd()
+	conexionEstablecida := conexionBd()
 
 	numfactura := r.URL.Query().Get("nfactura")
+	rutaDocumento := r.URL.Query().Get("rutadoc")
 	plantillas.ExecuteTemplate(w, "scanerverifica", nil)
 	fmt.Println(numfactura)
-	http.Redirect(w, r, "/scanerfacta", 301)
+	fmt.Println(rutaDocumento)
+	rutaCondicion := "\"" + rutaDocumento + "\""
+	facturacondicion := "\"" + numfactura + "\""
+	registros, err := conexionEstablecida.Query("SELECT Factura_verifica,Cuenta,Farmacia,Ruta,ver_factura FROM scaner_factura WHERE Ruta=" + rutaCondicion + "AND  Factura_verifica = " + facturacondicion)
+
+	if err != nil {
+		panic(err.Error())
+
+	}
+
+	//http.Redirect(w, r, "/scanerfacta", 301)
 
 }
 

@@ -18,13 +18,15 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="inputGroup-sizing-lg">Nùmero de factura</span>
                 </div>
-                <input type="text" class="form-control" aria-label="Nùmero de factura" aria-describedby="inputGroup-sizing-sm">
+                <input type="text"
+                 class="form-control" aria-label="Nùmero de factura" aria-describedby="inputGroup-sizing-sm">
               </div>
             -->
              
             <form action="/scanerverifica">
               <label for="fname">Numero de documento:</label><br>
               <input type="text" id="nfactura" name="nfactura" value=""><br>
+              <input id="rutadoc" name="rutadoc" type="hidden" value="{{$rutaHtml}}">
               <input type="submit" value="Submit">
             </form> 
             <!---->
