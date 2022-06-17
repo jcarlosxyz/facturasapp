@@ -37,22 +37,13 @@ func main() {
 }
 
 func ScanerVerifica(w http.ResponseWriter, r *http.Request) {
-	conexionEstablecida := conexionBd()
-
+	//conexionEstablecida := conexionBd()
 	numfactura := r.URL.Query().Get("nfactura")
-	rutaDocumento := r.URL.Query().Get("rutadoc")
+	numruta := r.URL.Query().Get("nruta")
+
 	plantillas.ExecuteTemplate(w, "scanerverifica", nil)
 	fmt.Println(numfactura)
-	fmt.Println(rutaDocumento)
-	rutaCondicion := "\"" + rutaDocumento + "\""
-	facturacondicion := "\"" + numfactura + "\""
-	registros, err := conexionEstablecida.Query("SELECT Factura_verifica,Cuenta,Farmacia,Ruta,ver_factura FROM scaner_factura WHERE Ruta=" + rutaCondicion + "AND  Factura_verifica = " + facturacondicion)
-
-	if err != nil {
-		panic(err.Error())
-
-	}
-
+	fmt.Println(numruta)
 	//http.Redirect(w, r, "/scanerfacta", 301)
 
 }
@@ -143,7 +134,7 @@ func ScanerFac(w http.ResponseWriter, r *http.Request) {
 	rutaPantalla := r.URL.Query().Get("browser")
 	//fmt.Println("\"" + rutaPantalla + "\"")
 	rutaCondicion := "\"" + rutaPantalla + "\""
-	registros, err := conexionEstablecida.Query("SELECT Factura_verifica,Cuenta,Farmacia,Ruta,ver_factura FROM scaner_factura WHERE Ruta=" + rutaCondicion)
+	registros, err := conexionEstablecida.Query("SELECT Factura_verifica,Cuenta,Farmacia,Ruta,ver_factura FROM scaner_factura WHERE Ruta=" + rutaCondicion + " AND " + "ver_factura =  0")
 
 	if err != nil {
 		panic(err.Error())
