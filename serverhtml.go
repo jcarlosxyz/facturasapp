@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 	"text/template"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -32,20 +33,96 @@ func main() {
 	http.HandleFunc("/factura", Factura)
 	http.HandleFunc("/scanerfacta", ScanerFac)
 	http.HandleFunc("/scanerverifica", ScanerVerifica)
+	http.HandleFunc("/guardado", Guadado)
 
 	log.Println("Servidor corriendo........")
 	http.ListenAndServe(":8080", nil)
 }
 
-func ScanerVerifica(w http.ResponseWriter, r *http.Request) {
-	//conexionEstablecida := conexionBd()
-	numfactura := r.URL.Query().Get("nfactura")
-	numruta := r.URL.Query().Get("nruta")
+func Guadado(w http.ResponseWriter, r *http.Request) {
 
-	plantillas.ExecuteTemplate(w, "scanerverifica", nil)
-	fmt.Println(numfactura)
-	fmt.Println(numruta)
+	plantillas.ExecuteTemplate(w, "guardado", nil)
+
+}
+
+type Guardando struct {
+	Ndocumento string
+	RutaStru   string
+}
+
+func ScanerVerifica(w http.ResponseWriter, r *http.Request) {
+	conexionEstablecida := conexionBd()
+	recopilardatos := Guardando{}
+	arregloDatos := []Guardando{}
+
+	numfactura := strings.TrimSpace(r.URL.Query().Get("nfactura"))
+	numruta := strings.TrimSpace(r.URL.Query().Get("nruta"))
+	recopilardatos.Ndocumento = numfactura
+	recopilardatos.RutaStru = numruta
+	arregloDatos = append(arregloDatos, recopilardatos)
+
+	//verificamos  si existe el numero de factura
+
+	rutaCondicion := "\"" + numruta + "\""
+	facturaCondicion := "\"" + numfactura + "\""
+	registros, err := conexionEstablecida.Query("SELECT Factura_verifica,Cuenta,Farmacia,Ruta,ver_factura FROM scaner_factura WHERE Ruta=" + rutaCondicion + " AND " + "ver_factura =  0" + " AND " + "Factura_verifica = " + facturaCondicion)
+
+	if err != nil {
+		panic(err.Error())
+
+	}
+	contenedorV := FacturaScaner{}
+	arregloContenedores := []FacturaScaner{}
+	for registros.Next() {
+
+		/*var contenedor string
+		var ruta string
+		*/
+		//---------------------
+		var FacturaverificaScanerV string
+		var CuentaScanerV string
+		var RutaScanerV string
+		var FarmaciaScanerV string
+		var VerfacturaScanerV string
+
+		//----------
+		err = registros.Scan(&FacturaverificaScanerV, &CuentaScanerV, &FarmaciaScanerV, &RutaScanerV, &VerfacturaScanerV)
+		if err != nil {
+			panic(err.Error())
+
+		} else {
+			contenedorV.FacturaverificaScaner = FacturaverificaScanerV
+			contenedorV.CuentaScaner = CuentaScanerV
+			contenedorV.RutaScaner = RutaScanerV
+			contenedorV.FarmaciaScaner = FarmaciaScanerV
+			contenedorV.VerfacturaScaner = VerfacturaScanerV
+			arregloContenedores = append(arregloContenedores, contenedorV)
+
+		}
+
+	}
+	//se obtenemos un registro guadamos la informacion
+	if len(arregloContenedores) != 0 {
+		actualizaRegistro(numfactura)
+		fmt.Println("Se guandar los cambios")
+
+	}
+	//fmt.Println(arregloContenedores)
+	//fmt.Println(numfactura)
+	//fmt.Println(numruta)
+	//fmt.Println("Cuantos elementos tiene el arreglo")
+	//fmt.Println(len(arregloContenedores))
+	//fin de verificacion de numero de documento
+	plantillas.ExecuteTemplate(w, "guardado", nil)
+	//fmt.Println(numfactura)
+	//fmt.Println(numruta)
 	//http.Redirect(w, r, "/scanerfacta", 301)
+
+}
+
+func actualizaRegistro(guadarFactura string) {
+
+	fmt.Println("se guadala la factura", guadarFactura)
 
 }
 
