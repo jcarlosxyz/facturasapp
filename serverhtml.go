@@ -3,7 +3,6 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 	"net/http"
 	"strings"
@@ -104,9 +103,14 @@ func ScanerVerifica(w http.ResponseWriter, r *http.Request) {
 	//se obtenemos un registro guadamos la informacion
 	if len(arregloContenedores) != 0 {
 		actualizaRegistro(numfactura)
-		fmt.Println("Se guandar los cambios")
-
+		//fmt.Println("Se guandar los cambios")
+		retornoListadoTabla := listatoRutaScaner(numruta)
+		//fmt.Println(retornoListadoTabla)
+		plantillas.ExecuteTemplate(w, "scanerfactura", retornoListadoTabla)
 	}
+
+	//repintamos la pantalla de verificacion de facturas
+
 	//fmt.Println(arregloContenedores)
 	//fmt.Println(numfactura)
 	//fmt.Println(numruta)
@@ -120,9 +124,70 @@ func ScanerVerifica(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func listatoRutaScaner(rutaCondicion string) []FacturaScaner {
+	//fmt.Println("La ruta de condicion es ", rutaCondicion)
+	conexionEstablecida := conexionBd()
+	//fmt.Println("\"" + rutaPantalla + "\"")
+	rutaCondicion = strings.TrimSpace(rutaCondicion)
+	rutaCondicion = "\"" + rutaCondicion + "\""
+	registros, err := conexionEstablecida.Query("SELECT Factura_verifica,Cuenta,Farmacia,Ruta,ver_factura FROM scaner_factura WHERE Ruta=" + rutaCondicion + " AND " + "ver_factura =  0")
+
+	if err != nil {
+		panic(err.Error())
+
+	}
+	contenedorV := FacturaScaner{}
+	arregloContenedores := []FacturaScaner{}
+	for registros.Next() {
+
+		/*var contenedor string
+		var ruta string
+		*/
+		//---------------------
+		var FacturaverificaScanerV string
+		var CuentaScanerV string
+		var RutaScanerV string
+		var FarmaciaScanerV string
+		var VerfacturaScanerV string
+
+		//----------
+		err = registros.Scan(&FacturaverificaScanerV, &CuentaScanerV, &FarmaciaScanerV, &RutaScanerV, &VerfacturaScanerV)
+		if err != nil {
+			panic(err.Error())
+
+		} else {
+			contenedorV.FacturaverificaScaner = FacturaverificaScanerV
+			contenedorV.CuentaScaner = CuentaScanerV
+			contenedorV.RutaScaner = RutaScanerV
+			contenedorV.FarmaciaScaner = FarmaciaScanerV
+			contenedorV.VerfacturaScaner = VerfacturaScanerV
+			arregloContenedores = append(arregloContenedores, contenedorV)
+
+		}
+
+	}
+
+	//fmt.Println(rutaPantalla)
+	//fmt.Println(arregloContenedores)
+	return arregloContenedores
+
+	//plantillas.ExecuteTemplate(w, "scanerfactura", arregloContenedores)
+
+}
+
 func actualizaRegistro(guadarFactura string) {
 
-	fmt.Println("se guadala la factura", guadarFactura)
+	conexionEstablecida := conexionBd()
+	guadarFactura = strings.TrimSpace(guadarFactura)
+	facturaCondicion := "\"" + guadarFactura + "\""
+	actualizaregistro, err := conexionEstablecida.Prepare("UPDATE scaner_factura SET  ver_factura =  1 " + "WHERE " + "Factura_verifica = " + facturaCondicion)
+	if err != nil {
+		panic(err.Error())
+
+	}
+	actualizaregistro.Exec()
+
+	//fmt.Println("se guadala la factura", guadarFactura)
 
 }
 
