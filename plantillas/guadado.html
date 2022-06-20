@@ -1,8 +1,30 @@
 {{define "guardado"}}
 {{template "cabeza"}}
 
-<h1>Se esta guardando la informacion</h1>
+<div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Error </h5>
+      <p class="card-text">El documento tiene un error</p>
+                <picture>
+                    <img src="/imagen/error1.PNG" alt="MDN">
+                </picture>
+            
+        <form action="/scanerfacta" method="get">
+                <input id="browser" name="browser" type="hidden" value={{.}}>
+            
+                <!--<input type="submit" class="btn btn-primary mb-2"> -->
+                <button type="submit" class="btn btn-primary mb-2" autofocus >Aceptar</button>
+            </form>
+            
+    </div>
+  </div>
 
+
+    
+
+ 
+
+  
 
 {{template "pie"}}
 {{end}}

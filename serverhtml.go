@@ -107,6 +107,11 @@ func ScanerVerifica(w http.ResponseWriter, r *http.Request) {
 		retornoListadoTabla := listatoRutaScaner(numruta)
 		//fmt.Println(retornoListadoTabla)
 		plantillas.ExecuteTemplate(w, "scanerfactura", retornoListadoTabla)
+	} else {
+		plantillas.ExecuteTemplate(w, "guardado", rutaCondicion)
+
+		//http.Error(w, "No esxiste el el cocumento", 500)
+
 	}
 
 	//repintamos la pantalla de verificacion de facturas
@@ -117,7 +122,7 @@ func ScanerVerifica(w http.ResponseWriter, r *http.Request) {
 	//fmt.Println("Cuantos elementos tiene el arreglo")
 	//fmt.Println(len(arregloContenedores))
 	//fin de verificacion de numero de documento
-	plantillas.ExecuteTemplate(w, "guardado", nil)
+	//	plantillas.ExecuteTemplate(w, "guardado", nil)
 	//fmt.Println(numfactura)
 	//fmt.Println(numruta)
 	//http.Redirect(w, r, "/scanerfacta", 301)
