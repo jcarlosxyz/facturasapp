@@ -13,6 +13,9 @@ import (
 
 var plantillas = template.Must(template.ParseGlob("public/plantillas/*.html"))
 
+//variable global de facturas
+var globalFactura = ""
+
 func conexionBd() (conexion *sql.DB) {
 	Driver := "mysql"
 	Usuario := "root"
@@ -103,9 +106,10 @@ func ScanerVerifica(w http.ResponseWriter, r *http.Request) {
 
 	}
 	//se obtenemos un registro guadamos la informacion
-	if len(arregloContenedores) != 0 {
+	if len(arregloContenedores) != 0 || globalFactura == numfactura {
 		actualizaRegistro(numfactura)
 		//fmt.Println("Se guandar los cambios")
+
 		retornoListadoTabla := listatoRutaScaner(numruta)
 		//fmt.Println(retornoListadoTabla)
 		plantillas.ExecuteTemplate(w, "scanerfactura", retornoListadoTabla)
@@ -186,6 +190,7 @@ func actualizaRegistro(guadarFactura string) {
 
 	conexionEstablecida := conexionBd()
 	guadarFactura = strings.TrimSpace(guadarFactura)
+	globalFactura = guadarFactura
 	facturaCondicion := "\"" + guadarFactura + "\""
 	actualizaregistro, err := conexionEstablecida.Prepare("UPDATE scaner_factura SET  ver_factura =  1 " + "WHERE " + "Factura_verifica = " + facturaCondicion)
 	if err != nil {

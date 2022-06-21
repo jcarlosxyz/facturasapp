@@ -1,21 +1,28 @@
 {{define "guardado"}}
 {{template "cabeza"}}
-
+<div class="d-flex justify-content-end">
 <div class="card">
     <div class="card-body">
       <h5 class="card-title"> </h5>
-      <p class="card-text">El documento no existe, la ruta es diferente o está duplicada</p>
-                <picture>
-                    <img src="/public/imagen/error1.PNG" alt="MDN">
-                </picture>
-            
-        <form action="/scanerfacta" method="get">
-                <input id="browser" name="browser" type="hidden" value={{.}}>
-            
-                <!--<input type="submit" class="btn btn-primary mb-2"> -->
-                <button type="submit" class="btn btn-primary mb-2" autofocus >Aceptar</button>
-            </form>
-            
+     
+                  
+                 
+                    <h4 class="alert-heading">Erro............!                                                                        </h4>
+                    <p class="card-text">El documento no existe, la ruta es diferente o está duplicada</p>
+                    <hr>
+                          <picture>
+                            <img src="/public/imagen/error1.PNG" alt="MDN">
+                           </picture>
+                    
+                           <form action="/scanerfacta" method="get">
+                                    <input id="browser" name="browser" type="hidden" value={{.}}>
+                    
+                                    <!--<input type="submit" class="btn btn-primary mb-2"> -->
+                                      <button type="submit" class="btn btn-primary mb-2" autofocus >Aceptar</button>
+                            </form>
+                  
+                  
+      </div>
     </div>
   </div>
 
