@@ -1,0 +1,86 @@
+{{define "scanerfactura"}}
+{{template "cabeza"}}
+
+
+      {{$rutaHtml:=""}}
+     <!-- {{range.}} -->
+        {{$rutaHtml = .RutaScaner}}
+      <!--{{end}} -->
+   
+     <div class="alert alert-dark" role="alert">
+      <table class="table">
+        <caption></caption>
+        <thead>
+          <tr>
+            <th scope="col">
+             <!--
+              <div class="input-group input-group-lg">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-lg">Nùmero de factura</span>
+                </div>
+                <input type="text" class="form-control" aria-label="Nùmero de factura" aria-describedby="inputGroup-sizing-sm">
+              </div>
+            -->
+             
+            <form action="/scanerverifica">
+              <label for="fname">Número de documento:</label><br>
+              <input type="text" id="nfactura" name="nfactura" value="" class="col-sm-2 col-form-label" autofocus><br>
+              <input id="nruta" name="nruta" type="hidden" value="{{$rutaHtml}}">
+           
+             <input type="submit" value="Submit"> 
+            </form> 
+            <!---->
+            </th>
+            <th scope="col">
+              <div class="row justify-content-center">
+
+                    <h1>{{$rutaHtml}}</h1> 
+              </div> 
+             </th>
+          </tr>
+        </thead>
+      </table>
+    </div>  
+
+
+
+
+
+
+
+      <!--
+        <div class="containerRuta">
+          <div class="resultadoRuta">
+               <h1>{{$rutaHtml}}</h1>
+          </div>
+        </div>
+      -->
+      <div class="alert alert-danger" role="alert">
+            <div class="container-fluid">
+                    <div class="row justify-content-center">  
+                          <table class="table table-dark">
+                            <thead>
+                              <tr>
+                                <th scope="facturaverifica">Factura</th>
+                                <th scope="cuenta">Cuenta</th>
+                                <th scope="ruta">Ruta</th>
+                                <th scope="farmacia">Farmacia</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                            {{range.}}
+                                <tr>
+                                  <td>{{.FacturaverificaScaner}}</td>
+                                  <td>{{.CuentaScaner}}</td>
+                                  <td>{{.RutaScaner}}</td>
+                                  <td>{{.FarmaciaScaner}}</td>
+                                </tr>
+                            {{end}}
+                            </tbody>
+                          </table>
+                          
+                    </div>
+              </div>        
+      </div>
+{{template "pie"}}
+{{end}}

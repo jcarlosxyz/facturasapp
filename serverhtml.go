@@ -11,7 +11,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-var plantillas = template.Must(template.ParseGlob("plantillas/*.html"))
+var plantillas = template.Must(template.ParseGlob("public/plantillas/*.html"))
 
 func conexionBd() (conexion *sql.DB) {
 	Driver := "mysql"
