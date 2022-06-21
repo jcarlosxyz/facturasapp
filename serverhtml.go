@@ -33,9 +33,11 @@ func main() {
 	http.HandleFunc("/scanerfacta", ScanerFac)
 	http.HandleFunc("/scanerverifica", ScanerVerifica)
 	http.HandleFunc("/guardado", Guadado)
+	// Servimos Archivos Estáticos (CSS, Imágenes, JS, etc.)
+	http.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("./public"))))
 
 	log.Println("Servidor corriendo........")
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":8081", nil)
 }
 
 func Guadado(w http.ResponseWriter, r *http.Request) {
