@@ -21,20 +21,22 @@
                 <input type="text" class="form-control" aria-label="Nùmero de factura" aria-describedby="inputGroup-sizing-sm">
               </div>
             -->
-             
+            <div class="form-group row"> 
             <form action="/scanerverifica">
               <label for="fname">Número de documento:</label><br>
-              <input type="text" id="nfactura" name="nfactura" value="" class="col-sm-2 col-form-label" autofocus><br>
+              <input class="form-control"  type="text" id="nfactura" name="nfactura" value="" class="col-sm-2 col-form-label" autofocus><br>
               <input id="nruta" name="nruta" type="hidden" value="{{$rutaHtml}}">
            
              <input type="submit" value="Submit"> 
-            </form> 
+            </form>
+          </div> 
             <!---->
             </th>
             <th scope="col">
-              <div class="row justify-content-center">
-
-                    <h1>{{$rutaHtml}}</h1> 
+              <div class="row justify-content-center" >
+                <button type="button" class="btn btn-primary btn-lg"> <h1>{{$rutaHtml}}</h1></button>
+                <!-- <div class="p-3 mb-2 bg-primary text-white"><h1>{{$rutaHtml}}</h1></div> -->
+                     
               </div> 
              </th>
           </tr>
