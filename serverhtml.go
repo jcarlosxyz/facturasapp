@@ -69,7 +69,8 @@ func ScanerVerifica(w http.ResponseWriter, r *http.Request) {
 
 	rutaCondicion := "\"" + numruta + "\""
 	facturaCondicion := "\"" + numfactura + "\""
-	registros, err := conexionEstablecida.Query("SELECT Factura_verifica,Cuenta,Farmacia,Ruta,ver_factura FROM scaner_factura WHERE Ruta=" + rutaCondicion + " AND " + "ver_factura =  0" + " AND " + "Factura_verifica = " + facturaCondicion)
+	condicionVer_factura := "\"" + "F" + "\""
+	registros, err := conexionEstablecida.Query("SELECT Factura_verifica,Cuenta,Farmacia,Ruta,ver_factura FROM scaner_factura WHERE Ruta=" + rutaCondicion + " AND " + "ver_factura =  " + condicionVer_factura + " AND " + "Factura_verifica = " + facturaCondicion)
 
 	if err != nil {
 		panic(err.Error())
@@ -141,7 +142,8 @@ func listatoRutaScaner(rutaCondicion string) []FacturaScaner {
 	//fmt.Println("\"" + rutaPantalla + "\"")
 	rutaCondicion = strings.TrimSpace(rutaCondicion)
 	rutaCondicion = "\"" + rutaCondicion + "\""
-	registros, err := conexionEstablecida.Query("SELECT Factura_verifica,Cuenta,Farmacia,Ruta,ver_factura FROM scaner_factura WHERE Ruta=" + rutaCondicion + " AND " + "ver_factura =  0")
+	condicionVer_factura := "\"" + "F" + "\""
+	registros, err := conexionEstablecida.Query("SELECT Factura_verifica,Cuenta,Farmacia,Ruta,ver_factura FROM scaner_factura WHERE Ruta=" + rutaCondicion + " AND " + "ver_factura = " + condicionVer_factura)
 
 	if err != nil {
 		panic(err.Error())
@@ -192,7 +194,8 @@ func actualizaRegistro(guadarFactura string) {
 	guadarFactura = strings.TrimSpace(guadarFactura)
 	globalFactura = guadarFactura
 	facturaCondicion := "\"" + guadarFactura + "\""
-	actualizaregistro, err := conexionEstablecida.Prepare("UPDATE scaner_factura SET  ver_factura =  1 " + "WHERE " + "Factura_verifica = " + facturaCondicion)
+	condicionVer_factura := "\"" + "T" + "\""
+	actualizaregistro, err := conexionEstablecida.Prepare("UPDATE scaner_factura SET  ver_factura =  " + condicionVer_factura + "WHERE " + "Factura_verifica = " + facturaCondicion)
 	if err != nil {
 		panic(err.Error())
 
@@ -289,7 +292,8 @@ func ScanerFac(w http.ResponseWriter, r *http.Request) {
 	rutaPantalla := r.URL.Query().Get("browser")
 	//fmt.Println("\"" + rutaPantalla + "\"")
 	rutaCondicion := "\"" + rutaPantalla + "\""
-	registros, err := conexionEstablecida.Query("SELECT Factura_verifica,Cuenta,Farmacia,Ruta,ver_factura FROM scaner_factura WHERE Ruta=" + rutaCondicion + " AND " + "ver_factura =  0")
+	condicionVer_factura := "\"" + "F" + "\""
+	registros, err := conexionEstablecida.Query("SELECT Factura_verifica,Cuenta,Farmacia,Ruta,ver_factura FROM scaner_factura WHERE Ruta=" + rutaCondicion + " AND " + "ver_factura = " + condicionVer_factura)
 
 	if err != nil {
 		panic(err.Error())
