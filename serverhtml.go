@@ -17,11 +17,18 @@ var plantillas = template.Must(template.ParseGlob("public/plantillas/*.html"))
 var globalFactura = ""
 
 func conexionBd() (conexion *sql.DB) {
+	//casa
+	//	Driver := "mysql"
+	//	Usuario := "root"
+	//	Contrasena := "emmanuelyk1"
+	//	Nombre := "almacen"
+	//	conexion, err := sql.Open(Driver, Usuario+":"+Contrasena+"@tcp(127.0.0.1:3305)/"+Nombre)
 	Driver := "mysql"
 	Usuario := "root"
-	Contrasena := "emmanuelyk1"
+	Contrasena := "marzam"
 	Nombre := "almacen"
-	conexion, err := sql.Open(Driver, Usuario+":"+Contrasena+"@tcp(127.0.0.1:3305)/"+Nombre)
+	conexion, err := sql.Open(Driver, Usuario+":"+Contrasena+"@tcp(192.168.16.6:3306)/"+Nombre)
+
 	if err != nil {
 		panic(err.Error())
 
@@ -40,7 +47,9 @@ func main() {
 	http.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("./public"))))
 
 	log.Println("Servidor corriendo........")
-	http.ListenAndServe(":8081", nil)
+	http.ListenAndServe("192.168.16.55:8081", nil)
+
+	//http.ListenAndServe(":8081", nil)
 }
 
 func Guadado(w http.ResponseWriter, r *http.Request) {
